@@ -1,0 +1,164 @@
+body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    header {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 0;
+      text-align: center;
+      position: relative;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2em;
+    }
+
+
+
+    /* Hamburger Menu (3 lines) */
+    .hamburger {
+      display: block;
+      cursor: pointer;
+      position: absolute;
+      left: 20px;
+      top: 15px;
+    }
+    .hamburger div {
+      width: 30px;
+      height: 3px;
+      background-color: white;
+      margin: 5px;
+      transition: 0.3s;
+    }
+
+    /* Dropdown Menu */
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 50px;
+      left: 0;
+      background-color: #333;
+      width: 200px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 10;
+    }
+    .dropdown a {
+      color: white;
+      padding: 12px;
+      text-decoration: none;
+      display: block;
+    }
+    .dropdown a:hover {
+      background-color: #555;
+    }
+
+    /* Navigation */
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      background-color: #333;
+      padding: 10px 0;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 8px 16px;
+    }
+    nav a:hover {
+      background-color: #555;
+    }
+
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #e0f7fa;
+      height: 300px;
+      text-align: center;
+    }
+    .hero h2 {
+      font-size: 2em;
+      color: #333;
+    }
+
+    .about, .services, .contact {
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .about h2, .services h2, .contact h2 {
+      color: #4CAF50;
+    }
+
+    .services-list {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .service-item {
+      flex: 1;
+      min-width: 200px;
+      padding: 15px;
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .contact form {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .contact label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .contact input, .contact textarea, .contact button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .contact button {
+      background-color: #4CAF50;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .contact button:hover {
+      background-color: #45a049;
+    }
+
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      font-size: 0.9em;
+    }
+
+    /* Media Query for Mobile - Dropdown */
+    @media (max-width: 768px) {
+      .hamburger {
+        display: block;
+      }
+
+      nav {
+        display: none;
+      }
+
+      .dropdown a {
+        padding: 10px;
+        font-size: 16px;
+      }
+    }

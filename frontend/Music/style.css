@@ -1,0 +1,195 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #e6f7f3; /* Soft green background */
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    background-image: url('https://images.unsplash.com/photo-1506794778202-d2dd2a1d39c3'); /* High-quality image for healthcare */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    position: relative;
+}
+
+/* Dark Overlay */
+body::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4); /* Dark overlay for better text readability */
+    z-index: -1;
+}
+
+/* Container Styling */
+.container {
+    max-width: 600px; /* Maximum width */
+    width: 100%; /* Full width of screen */
+    height: 90vh; /* Allow the container to take up most of the viewport height */
+    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px); /* Blurred background for a frosted effect */
+    text-align: center;
+    overflow-y: auto; /* Allow vertical scrolling if content overflows */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    position: relative;
+}
+
+/* Header Styling */
+header {
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 2.8rem;
+    color: #388e3c; /* Green for heading */
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+header p {
+    font-size: 1.2rem;
+    color: #555;
+}
+
+/* Form Container Styling */
+.form-container {
+    margin-bottom: 30px;
+}
+
+/* Labels */
+label {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    display: block;
+    text-align: left;
+    font-weight: 500;
+    color: #388e3c; /* Green color for labels */
+}
+
+/* Input and Select Fields */
+select, input {
+    width: 100%; /* Ensure full width */
+    padding: 12px 18px;
+    font-size: 1rem;
+    border: 2px solid #388e3c; /* Green border */
+    border-radius: 8px;
+    margin-bottom: 20px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+/* Focus Effect on Input and Select Fields */
+select:focus, input:focus {
+    border-color: #66bb6a; /* Lighter green on focus */
+    box-shadow: 0 0 8px rgba(102, 187, 106, 0.6);
+}
+
+/* Button Styling */
+button {
+    background-color: #388e3c; /* Green button */
+    color: white;
+    font-size: 1.2rem;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Button Hover Effect */
+button:hover {
+    background-color: #66bb6a; /* Lighter green on hover */
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: scale(1); /* Reset scale when clicked */
+}
+
+/* Recommendations Section */
+.recommendations {
+    margin-top: 30px;
+    text-align: left;
+}
+
+.recommendations h3 {
+    font-size: 1.8rem;
+    color: #388e3c; /* Green for recommendations header */
+    margin-bottom: 15px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.recommendations ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.recommendations ul li {
+    background-color: #f1f8e9; /* Very light green background */
+    padding: 15px;
+    margin: 8px 0;
+    border-left: 5px solid #388e3c; /* Green accent on the left */
+    font-size: 1.1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.recommendations ul li:hover {
+    background-color: #dcedc8; /* Slightly darker green background on hover */
+    transform: translateX(5px);
+}
+
+.recommendations ul li:nth-child(even) {
+    background-color: #f9fbe7; /* Very soft green for alternating list items */
+}
+
+.recommendations ul li:first-child {
+    margin-top: 0;
+}
+
+.recommendations ul li:last-child {
+    margin-bottom: 0;
+}
+
+/* Music Icon Styling */
+.recommendations ul li::before {
+    content: '\1F3B5'; /* Music note icon */
+    margin-right: 10px;
+    font-size: 1.3rem;
+    color: #388e3c; /* Green color for icons */
+}
+
+/* Footer Styling */
+footer {
+    margin-top: 30px;
+    font-size: 0.9rem;
+    color: #777;
+}
+
+/* Button Hover Effect */
+button:hover {
+    background-color: #66bb6a;
+    transform: scale(1.05);
+}

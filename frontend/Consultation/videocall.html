@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Video Consultation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        header {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        section {
+            padding: 20px;
+            margin: 20px;
+            text-align: center;
+        }
+        .video-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+        video {
+            width: 45%;
+            margin: 0 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .controls {
+            margin-top: 20px;
+        }
+        .controls button {
+            padding: 10px 20px;
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .controls button:hover {
+            background-color: #3498db;
+        }
+        .chat {
+            margin-top: 20px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .chat input, .chat textarea {
+            width: 60%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Doctor Video Consultation</h1>
+    </header>
+
+    <section>
+        <div class="video-container">
+            <!-- Local Video (User's Video) -->
+            <video id="local-video" autoplay muted></video>
+
+            <!-- Remote Video (Doctor's Video) -->
+            <video id="remote-video" autoplay></video>
+        </div>
+
+        <!-- Video Call Controls -->
+        <div class="controls">
+            <button id="mute-audio">Mute Audio</button>
+            <button id="mute-video">Mute Video</button>
+            <button id="screen-share">Share Screen</button>
+            <button id="end-call">End Call</button>
+        </div>
+
+        <!-- Chat Section -->
+        <div class="chat">
+            <h3>Chat with Doctor</h3>
+            <textarea id="chat-box" rows="4" placeholder="Type your message here..."></textarea>
+            <button id="send-message">Send Message</button>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 InsightCare Clinic. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let localStream;
+        let remoteStream;
+        let peerConnection;
+        let chatBox = document.getElementById('chat-box');
+
+        // Set up the signaling server and WebRTC connection
+        const signalingServer = 'https://your-signaling-server.com'; // Replace with your signaling server URL
+
+        // Video elements
+        const localVideo = document.getElementById('local-video');
+        const remoteVideo = document.getElementById('remote-video');
+
+        // Audio and Video mute/unmute buttons
+        const muteAudioBtn = document.getElementById('mute-audio');
+        const muteVideoBtn = document.getElementById('mute-video');
+        const screenShareBtn = document.getElementById('screen-share');
+        const endCallBtn = document.getElementById('end-call');
+
+        // Chat send button
+        const sendMessageBtn = document.getElementById('send-message');
+
+        // Initialize WebRTC connection
+        async function startVideoCall() {
+            localStream = await navigator.mediaDevices.getUserMedia({
+                video: true,
+                audio: true
+            });
+            localVideo.srcObject = localStream;
+
+            peerConnection = new RTCPeerConnection();
+            
+            // Add local stream to the peer connection
+            localStream.getTracks().forEach(track => {
+                peerConnection.addTrack(track, localStream);
+            });
+
+            // Set up remote stream on receiving tracks
+            peerConnection.ontrack = (event) => {
+                remoteStream = event.streams[0];
+                remoteVideo.srcObject = remoteStream;
+            };
+
+            // Set up ICE candidate handling
+            peerConnection.onicecandidate = (event) => {
+                if (event.candidate) {
+                    // Send ICE candidate to the signaling server
+                    signalingServer.send(JSON.stringify({ type: 'candidate', candidate: event.candidate }));
+                }
+            };
+
+            // Offer to connect (this would typically be triggered by signaling)
+            const offer = await peerConnection.createOffer();
+            await peerConnection.setLocalDescription(offer);
+
+            // Send offer to the signaling server
+            signalingServer.send(JSON.stringify({ type: 'offer', offer: offer }));
+        }
+
+        // Mute/unmute audio
+        muteAudioBtn.onclick = () => {
+            const audioTrack = localStream.getAudioTracks()[0];
+            audioTrack.enabled = !audioTrack.enabled;
+            muteAudioBtn.textContent = audioTrack.enabled ? 'Mute Audio' : 'Unmute Audio';
+        };
+
+        // Mute/unmute video
+        muteVideoBtn.onclick = () => {
+            const videoTrack = localStream.getVideoTracks()[0];
+            videoTrack.enabled = !videoTrack.enabled;
+            muteVideoBtn.textContent = videoTrack.enabled ? 'Mute Video' : 'Unmute Video';
+        };
+
+        // Share screen
+        screenShareBtn.onclick = async () => {
+            try {
+                const screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+                const screenTrack = screenStream.getTracks()[0];
+                const sender = peerConnection.getSenders().find(s => s.track.kind === screenTrack.kind);
+                sender.replaceTrack(screenTrack);
+                screenShareBtn.textContent = 'Stop Sharing';
+                screenTrack.onended = () => {
+                    screenShareBtn.textContent = 'Share Screen';
+                };
+            } catch (err) {
+                console.error('Error sharing screen: ', err);
+            }
+        };
+
+        // End the call
+        endCallBtn.onclick = () => {
+            peerConnection.close();
+            localStream.getTracks().forEach(track => track.stop());
+            localVideo.srcObject = null;
+            remoteVideo.srcObject = null;
+            alert('Call Ended');
+        };
+
+        // Handle chat message sending
+        sendMessageBtn.onclick = () => {
+            const message = chatBox.value;
+            if (message) {
+                // Send message to signaling server or peer connection
+                console.log('Sending message: ', message);
+                chatBox.value = ''; // Clear the input
+            }
+        };
+
+        // Start the video call when the page loads
+        window.onload = startVideoCall;
+
+    </script>
+</body>
+</html>

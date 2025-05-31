@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InsightCare</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <h1 class="site-title">InsightCare</h1>
+
+  <!-- Hamburger Menu -->
+  <div class="hamburger" onclick="toggleMenu()">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+
+  <!-- Dropdown Menu -->
+  <div class="dropdown">
+    <a href="Music/musicrecom.html">Music Recommendation</a>
+    <a href="Consultation/videocall.html">Online Consultation</a>
+    <a href="DispridicT/DiseasePridictor.py" target="_blank">Disease predictor</a>
+
+    <a href="HealthGuard/HealthGuard.html">HealthGuard</a>
+    <a href="MediTools/MediTools.html">MidiTools</a> <!-- New Tools dropdown link -->
+    <a href="Fizby/Fizby.html">Fitzy😉</a>
+  </div>
+</header>
+
+<!-- Navigation (Desktop) -->
+<nav>
+  <a href="#home">Home</a>
+  <a href="#about">About Us</a>
+  <a href="#services">Services</a>
+  <a href="#contact">Contact</a>
+</nav>
+
+<!-- Hero Section -->
+<section id="home" class="hero">
+  <h2>Understanding Minds, Delivering Care</h2>
+</section>
+
+<!-- About Section -->
+<section id="about" class="about">
+  <h2>About Us</h2>
+  <p>Welcome to InsightCare, where your well-being is our utmost concern. Our team of professionals is dedicated to providing top-quality healthcare services tailored to meet your individual needs.</p>
+</section>
+
+<!-- Services Section -->
+<section id="services" class="services">
+  <h2>Our Services</h2>
+  <div class="services-list">
+    <div class="service-item">
+      <h3>Diabetes InsightCare</h3>
+      <p>Advanced detection and predictive analysis for proactive diabetes management.</p>
+    </div>
+    <div class="service-item">
+      <h3>Cardio Care</h3>
+      <p>Early detection and personalized risk assessment for heart health.</p>
+    </div>
+    <div class="service-item">
+      <h3>Cancer Prognosis</h3>
+      <p>Full range of diagnostic tests to support your treatment plan.</p>
+    </div>
+    <div class="service-item">
+      <h3>24x7 Consultation</h3>
+      <p>24/7 emergency services for immediate and urgent care needs.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="contact">
+  <h2>Contact Us</h2>
+  <form id="contactForm">
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="message">Message</label>
+    <textarea id="message" name="message" rows="4" required></textarea>
+
+    <button type="submit">Send Message</button>
+  </form>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p>&copy; 2024 InsightCare Clinic. All rights reserved.</p>
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>
