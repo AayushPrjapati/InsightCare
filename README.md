@@ -25,7 +25,7 @@
 
 ## Installation
 
--Till Know NUN
+-Till now NUN
 
 
 
