@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Recommendation Engine</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Music Recommendation Engine</h1>
+            <p>Find music based on your mood, age, and gender to help you relax and feel better.</p>
+        </header>
+
+        <!-- Input form -->
+        <div class="form-container">
+            <div class="form-group">
+                <label for="disease">Select Disease</label>
+                <select id="disease">
+                    <option value="stress">Stress</option>
+                    <option value="anxiety">Anxiety</option>
+                    <option value="depression">Depression</option>
+                    <option value="insomnia">Insomnia</option>
+                    <option value="bipolar">Bipolar Disorder</option>
+                    <option value="schizophrenia">Schizophrenia</option>
+                    <option value="ptsd">Post-Traumatic Stress Disorder (PTSD)</option>
+                    <option value="eating-disorder">Eating Disorder</option>
+                    <option value="ocd">Obsessive-Compulsive Disorder (OCD)</option>
+                    <option value="addiction">Addiction</option>
+                    <option value="chronic-pain">Chronic Pain</option>
+                    <option value="fatigue">Fatigue</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="age">Select Age Group</label>
+                <select id="age">
+                    <option value="child">Child (0-12)</option>
+                    <option value="teen">Teen (13-19)</option>
+                    <option value="adult">Adult (20-64)</option>
+                    <option value="senior">Senior (65+)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="sex">Select Gender</label>
+                <select id="sex">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="non-binary">Non-binary</option>
+                    <option value="prefer-not-to-say">Prefer not to say</option>
+                </select>
+            </div>
+
+            <button class="btn" onclick="recommendMusic()">Get Recommendations</button>
+        </div>
+
+        <!-- Recommendations Section -->
+        <div id="recommendations" class="recommendations">
+            <!-- Dynamic recommendations will appear here -->
+        </div>
+    </div>
+
+    <script src="musicrecomscript.js"></script>
+</body>
+</html>

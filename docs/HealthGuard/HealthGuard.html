@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HealthGuard: Cancer Risk Assessment & Wellness</title>
+  <style>
+    /* General Styling */
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f8f2; /* Light green background */
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #4CAF50; /* Green background */
+      color: white;
+      padding: 30px 0;
+      text-align: center;
+      font-size: 2.5em;
+      font-weight: bold;
+      letter-spacing: 1px;
+      border-bottom: 4px solid #2c6e49; /* Dark green border */
+    }
+
+    /* Form & Input Fields Styling */
+    section {
+      padding: 40px 30px;
+      margin: 40px auto;
+      max-width: 900px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    h2, h3 {
+      color: #4CAF50;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    label {
+      font-size: 1.1em;
+      font-weight: bold;
+      color: #555;
+      margin-bottom: 8px;
+      display: inline-block;
+    }
+
+    input, select, textarea, button {
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 18px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1.1em;
+      transition: all 0.3s ease-in-out;
+    }
+
+    input:focus, select:focus, textarea:focus, button:focus {
+      border-color: #4CAF50;
+      outline: none;
+    }
+
+    button {
+      background-color: #4CAF50; /* Green background */
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1.2em;
+      transition: background-color 0.3s;
+      padding: 16px;
+    }
+
+    button:hover {
+      background-color: #45a049; /* Dark green on hover */
+    }
+
+    /* Result Section Styling */
+    .result {
+      background-color: #e6f7e6;
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      display: none;
+      text-align: center;
+    }
+
+    .result h3 {
+      font-size: 1.8em;
+      margin-bottom: 12px;
+    }
+
+    /* Health Tips Section */
+    .health-tips {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #e9f7df; /* Soft green */
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      display: none;
+    }
+
+    footer {
+      background-color: #4CAF50;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-size: 1em;
+    }
+
+    /* Symptom Tracker Section */
+    .tracker-section {
+      padding: 30px 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      margin-top: 30px;
+      border: 1px solid #ddd;
+    }
+
+    .tracker-section h3 {
+      font-size: 1.5em;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .tracker-table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+
+    .tracker-table th, .tracker-table td {
+      padding: 12px;
+      text-align: center;
+      border: 1px solid #ddd;
+    }
+
+    .tracker-table th {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .tracker-table td {
+      background-color: #f9f9f9;
+    }
+
+    .tracker-table tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    .tracker-section button {
+      background-color: #4CAF50;
+      color: white;
+      font-size: 1.1em;
+      font-weight: bold;
+      padding: 12px 20px;
+      cursor: pointer;
+      border-radius: 8px;
+      border: none;
+      margin-top: 15px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Appointment Reminder Section */
+    .appointment-section {
+      padding: 30px 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      margin-top: 30px;
+      border: 1px solid #ddd;
+    }
+
+    .appointment-section h3 {
+      font-size: 1.5em;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .appointment-list {
+      margin-top: 15px;
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .appointment-list li {
+      background-color: #f4f8f2;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+
+    .appointment-section button {
+      background-color: #4CAF50;
+      color: white;
+      font-size: 1.1em;
+      font-weight: bold;
+      padding: 12px 20px;
+      cursor: pointer;
+      border-radius: 8px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    @media (max-width: 600px) {
+      section {
+        padding: 25px;
+      }
+
+      button {
+        font-size: 1.3em;
+      }
+
+      .share-btn {
+        font-size: 1em;
+      }
+    }
+
+    /* Smooth Scroll to Top */
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  HealthGuard: Cancer Risk Assessment & Wellness
+</header>
+
+<!-- Cancer Detection Form -->
+<section>
+  <h2>Complete the Questionnaire to Assess Cancer Risk</h2>
+  <form id="cancerForm">
+    <label for="age">What is your age?</label>
+    <input type="number" id="age" name="age" required min="18" placeholder="Enter your age">
+
+    <label for="familyHistory">Do you have a family history of cancer? (Parents, siblings, etc.)</label>
+    <select id="familyHistory" name="familyHistory" required>
+      <option value="">Select an option</option>
+      <option value="yes">Yes</option>
+      <option value="no">No</option>
+    </select>
+
+    <label for="smoking">Do you currently smoke or have a history of smoking?</label>
+    <select id="smoking" name="smoking" required>
+      <option value="">Select an option</option>
+      <option value="yes">Yes</option>
+      <option value="no">No</option>
+    </select>
+
+    <label for="alcohol">Do you regularly consume alcohol?</label>
+    <select id="alcohol" name="alcohol" required>
+      <option value="">Select an option</option>
+      <option value="yes">Yes</option>
+      <option value="no">No</option>
+    </select>
+
+    <label for="exercise">Do you engage in regular physical activity (e.g., walking, exercise)?</label>
+    <select id="exercise" name="exercise" required>
+      <option value="">Select an option</option>
+      <option value="yes">Yes</option>
+      <option value="no">No</option>
+    </select>
+
+    <label for="weight">Do you have an abnormal weight gain or loss recently?</label>
+    <select id="weight" name="weight" required>
+      <option value="">Select an option</option>
+      <option value="yes">Yes</option>
+      <option value="no">No</option>
+    </select>
+
+    <label for="diet">Do you maintain a healthy diet (fruits, vegetables, lean protein)?</label>
+    <select id="diet" name="diet" required>
+      <option value="">Select an option</option>
+      <option value="yes">Yes</option>
+      <option value="no">No</option>
+    </select>
+
+    <label for="symptoms">Are you experiencing any unusual symptoms such as unexplained pain, lumps, or skin changes?</label>
+    <textarea id="symptoms" name="symptoms" placeholder="Describe any symptoms..." rows="4"></textarea>
+
+    <button type="button" onclick="checkCancerRisk()">Check Your Risk</button>
+  </form>
+</section>
+
+<!-- Result Section -->
+<section id="resultSection" class="result">
+  <h3>Your Cancer Risk Assessment Result</h3>
+  <p id="resultText"></p>
+  <a href="#" class="share-btn" onclick="shareResult()">Share Your Result</a>
+</section>
+
+<!-- Health Tips Section -->
+<section id="healthTips" class="health-tips">
+  <h3>Health Tips</h3>
+  <p id="tipsText"></p>
+</section>
+
+<!-- Symptom Tracker Section -->
+<section class="tracker-section">
+  <h3>Track Your Symptoms</h3>
+  <table class="tracker-table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Symptom</th>
+        <th>Severity</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody id="trackerTableBody">
+      <!-- Data will be inserted here -->
+    </tbody>
+  </table>
+  <button onclick="addSymptom()">Add Symptom</button>
+</section>
+
+<!-- Appointment Reminder Section -->
+<section class="appointment-section">
+  <h3>Set Your Appointment Reminder</h3>
+  <form id="appointmentForm">
+    <label for="appointmentDate">Appointment Date & Time</label>
+    <input type="datetime-local" id="appointmentDate" name="appointmentDate" required>
+
+    <label for="appointmentDetails">Appointment Details (e.g., Specialist, Reason)</label>
+    <input type="text" id="appointmentDetails" name="appointmentDetails" placeholder="Enter details of your appointment" required>
+
+    <button type="button" onclick="setAppointmentReminder()">Set Reminder</button>
+  </form>
+
+  <h3>Your Appointment List</h3>
+  <ul id="appointmentList" class="appointment-list">
+    <!-- Appointment details will appear here -->
+  </ul>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p>&copy; 2024 InsightCare Clinic. All rights reserved.</p>
+</footer>
+
+<script>
+  // Function to check cancer risk based on form input
+  function checkCancerRisk() {
+    const age = parseInt(document.getElementById('age').value);
+    const familyHistory = document.getElementById('familyHistory').value;
+    const smoking = document.getElementById('smoking').value;
+    const alcohol = document.getElementById('alcohol').value;
+    const exercise = document.getElementById('exercise').value;
+    const weight = document.getElementById('weight').value;
+    const diet = document.getElementById('diet').value;
+    const symptoms = document.getElementById('symptoms').value;
+
+    let riskLevel = '';
+    let message = '';
+
+    // Logic to determine risk level
+    if (age >= 50) {
+      if (familyHistory === "yes" || smoking === "yes" || alcohol === "yes") {
+        riskLevel = "High";
+        message = "You are at high risk for cancer. Immediate medical consultation is recommended.";
+      }
+    } else if (age >= 30 && age < 50) {
+      if (familyHistory === "yes" || smoking === "yes") {
+        riskLevel = "Medium";
+        message = "Your family history or smoking habits increase your risk. Regular check-ups are advised.";
+      } else if (weight === "yes" || exercise === "no") {
+        riskLevel = "Medium";
+        message = "Consider improving your lifestyle by maintaining a healthy weight and exercising regularly.";
+      }
+    } else {
+      if (familyHistory === "yes" || smoking === "yes" || alcohol === "yes") {
+        riskLevel = "Medium";
+        message = "Though your age is lower, certain habits (like smoking or alcohol use) can increase your risk.";
+      }
+    }
+
+    if (symptoms) {
+      message += " Please consult a healthcare professional about the symptoms you’ve described.";
+    }
+
+    // Display result
+    document.getElementById('resultText').innerText = message;
+    document.getElementById('resultSection').style.display = 'block';
+
+    // Health Tips based on the risk
+    displayHealthTips(riskLevel);
+  }
+
+  // Display health tips based on the risk level
+  function displayHealthTips(riskLevel) {
+    let tipsMessage = '';
+    if (riskLevel === 'High') {
+      tipsMessage = 'It is important to schedule regular screenings and consult with a healthcare provider immediately. Lifestyle changes, like quitting smoking, avoiding alcohol, and eating a balanced diet, can also reduce risks.';
+    } else if (riskLevel === 'Medium') {
+      tipsMessage = 'Consider regular check-ups and make positive lifestyle choices. Exercise regularly, maintain a healthy weight, and consume a nutritious diet rich in fruits and vegetables.';
+    } else {
+      tipsMessage = 'Great! Keep up with healthy habits, such as exercising, eating a balanced diet, and staying on top of regular screenings as recommended by your healthcare provider.';
+    }
+    document.getElementById('tipsText').innerText = tipsMessage;
+    document.getElementById('healthTips').style.display = 'block';
+  }
+
+  // Function for social sharing (mocked for now)
+  function shareResult() {
+    console.log('Sharing result on social media...');
+    alert('Your cancer risk result has been shared successfully!');
+  }
+
+  // Function to add symptom to tracker
+  function addSymptom() {
+    const date = new Date().toLocaleDateString();
+    const symptoms = prompt("Please enter your symptoms");
+    const severity = prompt("Enter the severity (Low, Medium, High)");
+    const notes = prompt("Any additional notes");
+
+    const table = document.getElementById('trackerTableBody');
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${date}</td>
+      <td>${symptoms}</td>
+      <td>${severity}</td>
+      <td>${notes}</td>
+    `;
+    table.appendChild(row);
+  }
+
+  // Function to set an appointment reminder
+  function setAppointmentReminder() {
+    const appointmentDate = document.getElementById('appointmentDate').value;
+    const appointmentDetails = document.getElementById('appointmentDetails').value;
+
+    if (appointmentDate && appointmentDetails) {
+      const appointmentList = document.getElementById('appointmentList');
+      const li = document.createElement('li');
+      li.innerHTML = `${appointmentDetails} - ${new Date(appointmentDate).toLocaleString()}`;
+      appointmentList.appendChild(li);
+
+      // Optionally, show an alert or notification here (browser notifications can be enabled for reminders)
+      alert('Your appointment reminder has been set!');
+    } else {
+      alert('Please fill in all fields.');
+    }
+  }
+</script>
+
+</body>
+</html>

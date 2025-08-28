@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f2f5;
+        }
+
+        .chat-container {
+            width: 400px;
+            height: 600px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        #chatbox {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bot-message, .user-message {
+            max-width: 80%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        .bot-message {
+            background-color: #e0e0e0;
+            align-self: flex-start;
+        }
+
+        .user-message {
+            background-color: #007bff;
+            color: white;
+            align-self: flex-end;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 70px);
+            padding: 10px;
+            border: none;
+            border-top: 1px solid #ddd;
+            outline: none;
+            font-size: 16px;
+        }
+
+        button {
+            width: 70px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div id="chatbox">
+            <div class="bot-message">
+                <p>Hello! I'm here to help you with any questions. Ask me anything!</p>
+            </div>
+        </div>
+        <input type="text" id="user-input" placeholder="Type your message here..." />
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        // Predefined responses for common questions
+        const responses = {
+            "hello": "Hello! How can I assist you today?",
+            "how are you": "I'm just a bot, but I'm here to help!",
+            "what is your name": "I'm your virtual assistant.",
+            "tell me a joke": "Why did the scarecrow win an award? Because he was outstanding in his field!",
+            "bye": "Goodbye! Have a great day!",
+            "default": "I'm sorry, I didn't understand that. Can you please rephrase?"
+            
+        };
+
+        // Function to send a message
+        function sendMessage() {
+            const userInput = document.getElementById("user-input").value;
+            if (userInput.trim() === "") return;
+
+            // Add user message to chatbox
+            addMessage(userInput, "user");
+
+            // Get bot response
+            const botResponse = getResponse(userInput);
+            setTimeout(() => addMessage(botResponse, "bot"), 500);
+
+            // Clear input field
+            document.getElementById("user-input").value = "";
+        }
+
+        // Function to add a message to the chatbox
+        function addMessage(text, sender) {
+            const chatbox = document.getElementById("chatbox");
+            const message = document.createElement("div");
+            message.classList.add(sender === "user" ? "user-message" : "bot-message");
+            message.innerHTML = <p>${text}</p>;
+            chatbox.appendChild(message);
+            chatbox.scrollTop = chatbox.scrollHeight;  // Auto-scroll to the latest message
+        }
+
+        // Function to retrieve bot response
+        function getResponse(input) {
+            input = input.toLowerCase();
+            return responses[input] || responses["default"];
+        }
+    </script>
+</body>
+</html>
