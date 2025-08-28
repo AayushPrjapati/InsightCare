@@ -27,8 +27,6 @@
 
 -Till now NUN
 
--Just run index.html(\frontend)
-
--or [TAP HERE](https://aayushprjapati.github.io/InsightCare/)
+-Just run index.html(\frontend) or [TAP HERE](https://aayushprjapati.github.io/InsightCare/)
 
 
