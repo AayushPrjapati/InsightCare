@@ -97,7 +97,7 @@
             text-align: center;
         }
 
-        input[type="number"]:focus {
+        input[type="number"]:focus, input[type="text"]:focus {
             outline: none;
             border-color: #27ae60;
         }
@@ -116,6 +116,29 @@
         .button:hover {
             background-color: #27ae60;
             transform: translateY(-3px);
+        }
+
+        /* New styles for the report button */
+        .report-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .report-button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .report-button:hover {
+            background-color: #2980b9;
         }
 
         /* Loading Spinner */
@@ -186,7 +209,6 @@
         <h1>Health Indicator Comparison</h1>
         <p>Select a health indicator to compare your values with the normal ranges.</p>
 
-        <!-- Tab Navigation -->
         <div class="tabs">
             <div class="tab active" onclick="switchTab('bmi')">BMI</div>
             <div class="tab" onclick="switchTab('bloodPressure')">Blood Pressure</div>
@@ -196,7 +218,6 @@
             <div class="tab" onclick="switchTab('restingHeartRate')">Resting Heart Rate</div>
         </div>
 
-        <!-- Tab Content: BMI -->
         <div id="bmi" class="tab-content active">
             <div class="form-group">
                 <label for="bmi-value">Enter your BMI</label>
@@ -204,9 +225,11 @@
             </div>
             <button class="button" onclick="checkHealth('bmi')">Check BMI</button>
             <div class="normal-range" id="bmi-range">Normal range: 18.5 - 24.9</div>
+            <div class="report-container">
+                <button class="report-button" onclick="addToDailyReport('bmi')">Log Reading 📃</button>
+            </div>
         </div>
 
-        <!-- Tab Content: Blood Pressure -->
         <div id="bloodPressure" class="tab-content">
             <div class="form-group">
                 <label for="blood-pressure">Enter your Blood Pressure</label>
@@ -214,9 +237,11 @@
             </div>
             <button class="button" onclick="checkHealth('bloodPressure')">Check Blood Pressure</button>
             <div class="normal-range" id="bloodPressure-range">Normal range: 120/80 mmHg</div>
+            <div class="report-container">
+                <button class="report-button" onclick="addToDailyReport('bloodPressure')">Log Reading 📃</button>
+            </div>
         </div>
 
-        <!-- Tab Content: Cholesterol -->
         <div id="cholesterol" class="tab-content">
             <div class="form-group">
                 <label for="cholesterol-value">Enter your Cholesterol Level</label>
@@ -224,9 +249,11 @@
             </div>
             <button class="button" onclick="checkHealth('cholesterol')">Check Cholesterol</button>
             <div class="normal-range" id="cholesterol-range">Normal range: < 200 mg/dL</div>
+            <div class="report-container">
+                <button class="report-button" onclick="addToDailyReport('cholesterol')">Log Reading 📃</button>
+            </div>
         </div>
 
-        <!-- Tab Content: Blood Sugar -->
         <div id="bloodSugar" class="tab-content">
             <div class="form-group">
                 <label for="blood-sugar">Enter your Blood Sugar Level</label>
@@ -234,9 +261,11 @@
             </div>
             <button class="button" onclick="checkHealth('bloodSugar')">Check Blood Sugar</button>
             <div class="normal-range" id="bloodSugar-range">Normal range: 70 - 130 mg/dL (before meals)</div>
+            <div class="report-container">
+                <button class="report-button" onclick="addToDailyReport('bloodSugar')">Log Reading 📃</button>
+            </div>
         </div>
 
-        <!-- Tab Content: Waist-to-Hip Ratio -->
         <div id="waistHip" class="tab-content">
             <div class="form-group">
                 <label for="waist-hip-ratio">Enter your Waist-to-Hip Ratio</label>
@@ -244,9 +273,11 @@
             </div>
             <button class="button" onclick="checkHealth('waistHip')">Check Waist-to-Hip Ratio</button>
             <div class="normal-range" id="waistHip-range">Normal range: < 0.85 (female), < 0.90 (male)</div>
+            <div class="report-container">
+                <button class="report-button" onclick="addToDailyReport('waistHip')">Log Reading 📃</button>
+            </div>
         </div>
 
-        <!-- Tab Content: Resting Heart Rate -->
         <div id="restingHeartRate" class="tab-content">
             <div class="form-group">
                 <label for="resting-heart-rate">Enter your Resting Heart Rate</label>
@@ -254,125 +285,197 @@
             </div>
             <button class="button" onclick="checkHealth('restingHeartRate')">Check Resting Heart Rate</button>
             <div class="normal-range" id="restingHeartRate-range">Normal range: 60 - 100 bpm</div>
+            <div class="report-container">
+                <button class="report-button" onclick="addToDailyReport('restingHeartRate')">Log Reading 📃</button>
+            </div>
         </div>
 
-        <!-- Result -->
         <div class="result" id="result"></div>
     </div>
 
     <script>
+
         // Tab switching function
-        function switchTab(tabName) {
-            const tabContents = document.querySelectorAll('.tab-content');
-            tabContents.forEach(tab => tab.classList.remove('active'));
+        const isSighnedIN = false; 
 
-            const tabs = document.querySelectorAll('.tab');
-            tabs.forEach(tab => tab.classList.remove('active'));
+// Tab switching function
+function switchTab(tabName) {
+    const tabContents = document.querySelectorAll('.tab-content');
+    tabContents.forEach(tab => tab.classList.remove('active'));
 
-            document.getElementById(tabName).classList.add('active');
-            const activeTab = document.querySelector(`.tab[onclick="switchTab('${tabName}')"]`);
-            activeTab.classList.add('active');
-        }
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => tab.classList.remove('active'));
 
-        // General health check function
-        function checkHealth(indicator) {
-            let value, resultMessage;
-            const result = document.getElementById("result");
-            const rangeElement = document.getElementById(`${indicator}-range`);
-            result.style.opacity = 0;  // Hide result temporarily
+    document.getElementById(tabName).classList.add('active');
+    const activeTab = document.querySelector(`.tab[onclick="switchTab('${tabName}')"]`);
+    activeTab.classList.add('active');
+}
 
-            const spinner = document.createElement('div');
-            spinner.classList.add('loading');
-            result.appendChild(spinner);
+// General health check function
+function checkHealth(indicator) {
+    let value, resultMessage;
+    const result = document.getElementById("result");
+    const rangeElement = document.getElementById(`${indicator}-range`);
+    result.style.opacity = 0;
 
-            setTimeout(() => {
-                result.removeChild(spinner);  // Remove the loading spinner
-                switch (indicator) {
-                    case 'bmi':
-                        value = parseFloat(document.getElementById("bmi-value").value);
-                        rangeElement.style.display = 'block';
-                        if (value >= 18.5 && value <= 24.9) {
-                            resultMessage = '<span class="normal">Your BMI is normal!</span>';
-                        } else if (value < 18.5) {
-                            resultMessage = '<span class="abnormal">Your BMI is underweight.</span>';
-                        } else {
-                            resultMessage = '<span class="abnormal">Your BMI is overweight/obese.</span>';
-                        }
-                        break;
+    // Validation Check: Get input and check if it's empty
+    const inputElement = document.getElementById(`${indicator}-value`) || document.getElementById(indicator.toLowerCase());
+    const inputValue = inputElement ? inputElement.value.trim() : '';
 
-                    case 'bloodPressure':
-                        const bp = document.getElementById("blood-pressure").value;
-                        if (/^\d{2,3}\/\d{2,3}$/.test(bp)) {
-                            resultMessage = `<span class="normal">Your blood pressure is normal: ${bp}</span>`;
-                        } else {
-                            resultMessage = '<span class="abnormal">Invalid blood pressure input.</span>';
-                        }
-                        break;
+    if (!inputValue) {
+        setTimeout(() => {
+            result.innerHTML = '<span class="abnormal">Please enter a value to check.</span>';
+            result.style.opacity = 1;
+        }, 500);
+        return;
+    }
 
-                    case 'cholesterol':
-                        value = parseFloat(document.getElementById("cholesterol-value").value);
-                        if (value < 200) {
-                            resultMessage = '<span class="normal">Your cholesterol level is normal.</span>';
-                        } else {
-                            resultMessage = '<span class="abnormal">Your cholesterol is high.</span>';
-                        }
-                        break;
+    const spinner = document.createElement('div');
+    spinner.classList.add('loading');
+    result.appendChild(spinner);
 
-                    case 'bloodSugar':
-                        value = parseFloat(document.getElementById("blood-sugar").value);
-                        if (value >= 70 && value <= 130) {
-                            resultMessage = '<span class="normal">Your blood sugar level is normal.</span>';
-                        } else {
-                            resultMessage = '<span class="abnormal">Your blood sugar level is abnormal.</span>';
-                        }
-                        break;
-
-                    case 'waistHip':
-                        value = parseFloat(document.getElementById("waist-hip-ratio").value);
-                        if (value < 0.85) {
-                            resultMessage = '<span class="normal">Your waist-to-hip ratio is normal (female).</span>';
-                        } else if (value < 0.90) {
-                            resultMessage = '<span class="normal">Your waist-to-hip ratio is normal (male).</span>';
-                        } else {
-                            resultMessage = '<span class="abnormal">Your waist-to-hip ratio is too high.</span>';
-                        }
-                        break;
-
-                    case 'restingHeartRate':
-                        value = parseInt(document.getElementById("resting-heart-rate").value);
-                        if (value >= 60 && value <= 100) {
-                            resultMessage = '<span class="normal">Your resting heart rate is normal.</span>';
-                        } else {
-                            resultMessage = '<span class="abnormal">Your resting heart rate is abnormal.</span>';
-                        }
-                        break;
-
-                    default:
-                        resultMessage = '<span class="abnormal">Invalid input. Please try again.</span>';
-                }
-
-                result.innerHTML = resultMessage;
-                result.style.opacity = 1;
-            }, 1500);  // Simulate delay (1.5 seconds)
-        }
-
-        // Real-time input feedback function
-        function checkRealTime(indicator) {
-            const result = document.getElementById("result");
-            let value;
-            
-            if (indicator === 'bmi') {
-                value = parseFloat(document.getElementById("bmi-value").value);
-                if (isNaN(value) || value <= 0) {
-                    result.innerHTML = '<span class="abnormal">Please enter a valid BMI.</span>';
-                    result.style.opacity = 1;
+    setTimeout(() => {
+        result.removeChild(spinner);
+        switch (indicator) {
+            case 'bmi':
+                value = parseFloat(inputValue);
+                if (isNaN(value)) {
+                    resultMessage = '<span class="abnormal">Please enter a valid BMI.</span>';
+                } else if (value >= 18.5 && value <= 24.9) {
+                    resultMessage = '<span class="normal">Your BMI is normal!</span>';
+                } else if (value < 18.5) {
+                    resultMessage = '<span class="abnormal">Your BMI is underweight.</span>';
                 } else {
-                    result.innerHTML = '';
+                    resultMessage = '<span class="abnormal">Your BMI is overweight/obese.</span>';
                 }
-            }
+                break;
 
-            // Similar logic can be applied for other indicators
+            case 'bloodPressure':
+                if (/^\d{2,3}\/\d{2,3}$/.test(inputValue)) {
+                    const [systolic, diastolic] = inputValue.split('/').map(Number);
+                    if (systolic < 90 || systolic > 140 || diastolic < 60 || diastolic > 90) {
+                        resultMessage = '<span class="abnormal">Your blood pressure is abnormal.</span>';
+                    } else {
+                        resultMessage = `<span class="normal">Your blood pressure is normal: ${inputValue}</span>`;
+                    }
+                } else {
+                    resultMessage = '<span class="abnormal">Invalid blood pressure format (e.g., 120/80).</span>';
+                }
+                break;
+
+            case 'cholesterol':
+                value = parseFloat(inputValue);
+                if (isNaN(value)) {
+                    resultMessage = '<span class="abnormal">Please enter a valid cholesterol level.</span>';
+                } else if (value < 200) {
+                    resultMessage = '<span class="normal">Your cholesterol level is normal.</span>';
+                } else {
+                    resultMessage = '<span class="abnormal">Your cholesterol is high.</span>';
+                }
+                break;
+
+            case 'bloodSugar':
+                value = parseFloat(inputValue);
+                if (isNaN(value)) {
+                    resultMessage = '<span class="abnormal">Please enter a valid blood sugar level.</span>';
+                } else if (value >= 70 && value <= 130) {
+                    resultMessage = '<span class="normal">Your blood sugar level is normal.</span>';
+                } else {
+                    resultMessage = '<span class="abnormal">Your blood sugar level is abnormal.</span>';
+                }
+                break;
+
+            case 'waistHip':
+                value = parseFloat(inputValue);
+                if (isNaN(value)) {
+                    resultMessage = '<span class="abnormal">Please enter a valid waist-to-hip ratio.</span>';
+                } else if (value < 0.85) {
+                    resultMessage = '<span class="normal">Your waist-to-hip ratio is normal (female).</span>';
+                } else if (value < 0.90) {
+                    resultMessage = '<span class="normal">Your waist-to-hip ratio is normal (male).</span>';
+                } else {
+                    resultMessage = '<span class="abnormal">Your waist-to-hip ratio is too high.</span>';
+                }
+                break;
+
+            case 'restingHeartRate':
+                value = parseInt(inputValue);
+                if (isNaN(value)) {
+                    resultMessage = '<span class="abnormal">Please enter a valid heart rate.</span>';
+                } else if (value >= 60 && value <= 100) {
+                    resultMessage = '<span class="normal">Your resting heart rate is normal.</span>';
+                } else {
+                    resultMessage = '<span class="abnormal">Your resting heart rate is abnormal.</span>';
+                }
+                break;
+
+            default:
+                resultMessage = '<span class="abnormal">Invalid input. Please try again.</span>';
         }
+
+        result.innerHTML = resultMessage;
+        result.style.opacity = 1;
+    }, 1500);
+}
+
+// Function to add data to daily report
+function addToDailyReport(indicator) {
+    const result = document.getElementById("result");
+    result.style.opacity = 0;
+
+    if (!isSighnedIN) {
+        setTimeout(() => {
+            result.innerHTML = '<span class="abnormal">❌ User Data Not Found. Please Register To MindfulMed</span>';
+            result.style.opacity = 1;
+        }, 500);
+        return;
+    }
+
+    let value, reportMessage;
+    const spinner = document.createElement('div');
+    spinner.classList.add('loading');
+    result.appendChild(spinner);
+
+    setTimeout(() => {
+        result.removeChild(spinner);
+        switch (indicator) {
+            case 'bmi':
+                value = document.getElementById("bmi-value").value;
+                reportMessage = `✔️ BMI of ${value} logged.`;
+                break;
+            case 'bloodPressure':
+                value = document.getElementById("blood-pressure").value;
+                reportMessage = `✔️ Blood Pressure of ${value} logged.`;
+                break;
+            case 'cholesterol':
+                value = document.getElementById("cholesterol-value").value;
+                reportMessage = `✔️ Cholesterol of ${value} mg/dL logged.`;
+                break;
+            case 'bloodSugar':
+                value = document.getElementById("blood-sugar").value;
+                reportMessage = `✔️ Blood Sugar of ${value} mg/dL logged.`;
+                break;
+            case 'waistHip':
+                value = document.getElementById("waist-hip-ratio").value;
+                reportMessage = `✔️ Waist-to-Hip Ratio of ${value} logged.`;
+                break;
+            case 'restingHeartRate':
+                value = document.getElementById("resting-heart-rate").value;
+                reportMessage = `✔️ Resting Heart Rate of ${value} bpm logged.`;
+                break;
+            default:
+                reportMessage = `❌ Could not log reading.`;
+        }
+        result.innerHTML = `<span class="normal">${reportMessage}</span>`;
+        result.style.opacity = 1;
+    }, 1000);
+}
+
+// Real-time input feedback function (can be removed as checkHealth now validates)
+function checkRealTime(indicator) {
+    const result = document.getElementById("result");
+    result.innerHTML = '';
+}
     </script>
 </body>
 </html>
